@@ -1,0 +1,2085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KEN'S DAY</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;700&family=Space+Mono:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #E8001D;
+    --gold: #C8A84B;
+    --white: #F5F3EE;
+    --black: #0A0A0A;
+    --gray: #1A1A1A;
+    --gray2: #2A2A2A;
+    --blue: #003DA5;
+    --spider-red: #CC0000;
+
+    /* Spider-Man palette */
+    --sp-red: #CC0000;
+    --sp-blue: #003DA5;
+    --sp-web: #1a1a2e;
+
+    /* Frank Sinatra / Big Band palette */
+    --sin-gold: #D4AF37;
+    --sin-cream: #F5E6C8;
+    --sin-navy: #0D1B3E;
+    --sin-burgundy: #6B1F3A;
+
+    /* Porsche GT3 RS palette */
+    --por-red: #E40521;
+    --por-silver: #B8BBBE;
+    --por-yellow: #D5A000;
+    --por-carbon: #141414;
+
+    /* Ferrari/Leclerc/Madrid palette */
+    --fer-red: #DC0000;
+    --fer-yellow: #FFC906;
+    --mad-white: #F0F0F0;
+    --mad-gold: #C89B3C;
+    --mad-purple: #4B0082;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ── SCREEN MANAGER ── */
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+  /* ── INTRO SCREEN ── */
+  #screen-intro {
+    background: 
+      radial-gradient(ellipse at 70% 10%, #3d0010 0%, transparent 50%),
+      radial-gradient(ellipse at 20% 80%, #00083d 0%, transparent 50%),
+      linear-gradient(160deg, #0a0010 0%, #05000a 50%, #000308 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  /* City skyline silhouette for intro */
+  #screen-intro::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 40%;
+    background: linear-gradient(to top, #0d0010 0%, #0a000c 60%, transparent 100%);
+    clip-path: polygon(
+      0% 100%, 0% 60%, 2% 60%, 2% 40%, 4% 40%, 4% 60%,
+      7% 60%, 7% 25%, 9% 25%, 9% 60%,
+      12% 60%, 12% 45%, 14% 45%, 14% 60%,
+      17% 60%, 17% 20%, 19% 20%, 19% 8%, 21% 8%, 21% 20%, 23% 20%, 23% 60%,
+      26% 60%, 26% 35%, 28% 35%, 28% 60%,
+      32% 60%, 32% 15%, 34% 15%, 34% 60%,
+      38% 60%, 38% 30%, 40% 30%, 40% 60%,
+      44% 60%, 44% 50%, 46% 50%, 46% 60%,
+      50% 60%, 50% 18%, 52% 18%, 52% 5%, 54% 5%, 54% 18%, 56% 18%, 56% 60%,
+      60% 60%, 60% 38%, 62% 38%, 62% 60%,
+      66% 60%, 66% 22%, 68% 22%, 68% 60%,
+      72% 60%, 72% 42%, 74% 42%, 74% 60%,
+      78% 60%, 78% 28%, 80% 28%, 80% 12%, 82% 12%, 82% 28%, 84% 28%, 84% 60%,
+      88% 60%, 88% 35%, 90% 35%, 90% 60%,
+      94% 60%, 94% 48%, 96% 48%, 96% 60%,
+      100% 60%, 100% 100%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .intro-web {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.2;
+  }
+
+  .intro-web svg { width: 100%; height: 100%; }
+
+  .intro-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 12vw, 9rem);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    position: relative;
+    z-index: 2;
+  }
+
+  .intro-title span { color: var(--red); }
+
+  .intro-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(0.65rem, 2vw, 0.85rem);
+    letter-spacing: 0.25em;
+    color: #6699ff;
+    text-transform: uppercase;
+    margin-top: 1rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .intro-btn {
+    margin-top: 3rem;
+    padding: 1rem 3rem;
+    background: linear-gradient(135deg, var(--sp-red) 0%, #8B0000 50%, var(--sp-blue) 100%);
+    color: var(--white);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.1em;
+    border: 1px solid rgba(204,0,0,0.5);
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+    transition: all 0.2s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    box-shadow: 0 0 20px rgba(204,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+  .intro-btn:hover { 
+    background: linear-gradient(135deg, #ff1a1a 0%, var(--sp-red) 50%, #0055ff 100%);
+    box-shadow: 0 0 35px rgba(204,0,0,0.6);
+    transform: translateY(-2px); 
+  }
+
+  .theme-icons {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin-top: 2.5rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+  }
+
+  .theme-icon {
+    font-size: 1.8rem;
+    opacity: 0.6;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .theme-icon:hover { opacity: 1; transform: scale(1.2); }
+
+  /* ── GAME CONTAINER SHARED ── */
+  .game-screen {
+    background: var(--gray);
+    width: 100%;
+    min-height: 100vh;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* GAME 1 - Spiderman themed: dark blue-red */
+  #screen-game1 .game-screen {
+    background:
+      radial-gradient(ellipse at 80% 20%, #2a000a 0%, transparent 45%),
+      radial-gradient(ellipse at 10% 80%, #00072a 0%, transparent 45%),
+      linear-gradient(135deg, #0d0005 0%, #050010 100%);
+  }
+  #screen-game1 .game-screen::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 49px, rgba(204,0,0,0.06) 49px, rgba(204,0,0,0.06) 50px),
+      repeating-linear-gradient(90deg, transparent, transparent 49px, rgba(0,61,165,0.06) 49px, rgba(0,61,165,0.06) 50px);
+    pointer-events: none;
+  }
+  #screen-game1 .game-label { color: #6699ff; }
+  #screen-game1 .game-title { 
+    background: linear-gradient(135deg, var(--sp-red), #ff4444, var(--sp-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  #screen-game1 .game-card {
+    background: rgba(10,0,20,0.8);
+    border: 1px solid rgba(204,0,0,0.3);
+    box-shadow: 0 0 30px rgba(204,0,0,0.1), inset 0 0 20px rgba(0,61,165,0.05);
+  }
+  #screen-game1 .date-btn {
+    border-color: rgba(0,61,165,0.4);
+    color: #aabbff;
+  }
+  #screen-game1 .date-btn:hover { border-color: var(--sp-red); color: #ff4444; }
+  #screen-game1 .attempt-dots .dot { background: rgba(0,61,165,0.4); }
+  #screen-game1 .attempt-dots .dot.used { background: var(--sp-red); box-shadow: 0 0 6px var(--sp-red); }
+
+  /* GAME 2 - Frank Sinatra / Vegas: deep midnight blue gold */
+  #screen-game2 .game-screen {
+    background:
+      radial-gradient(ellipse at 50% 0%, #1a1200 0%, transparent 60%),
+      radial-gradient(ellipse at 20% 100%, #0a0818 0%, transparent 50%),
+      linear-gradient(180deg, #08060f 0%, #0c0a00 50%, #08060f 100%);
+  }
+  #screen-game2 .game-screen::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 15% 25%, rgba(212,175,55,0.1) 0%, transparent 30%),
+      radial-gradient(circle at 85% 75%, rgba(212,175,55,0.1) 0%, transparent 30%),
+      radial-gradient(circle at 50% 50%, rgba(212,175,55,0.04) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  #screen-game2 .game-label { color: var(--sin-gold); letter-spacing: 0.4em; }
+  #screen-game2 .game-title {
+    background: linear-gradient(135deg, var(--sin-cream), var(--sin-gold), var(--sin-cream));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  #screen-game2 .game-card {
+    background: rgba(8,6,15,0.9);
+    border: 1px solid rgba(212,175,55,0.35);
+    box-shadow: 0 0 40px rgba(212,175,55,0.08), inset 0 0 30px rgba(212,175,55,0.03);
+  }
+  #screen-game2 .quiz-theme-tag {
+    color: var(--sin-gold);
+    border-color: var(--sin-gold);
+    box-shadow: 0 0 10px rgba(212,175,55,0.2);
+  }
+  #screen-game2 .quiz-q { color: var(--sin-cream); }
+  #screen-game2 .quiz-btn {
+    border-color: rgba(212,175,55,0.2);
+    color: #d4c5a0;
+  }
+  #screen-game2 .quiz-btn:hover:not(:disabled) { border-color: var(--sin-gold); color: var(--sin-gold); }
+  #screen-game2 .score-bar { color: var(--sin-gold); }
+  #screen-game2 .qp-dot.done { background: var(--sin-gold); }
+  #screen-game2 .qp-dot.active { background: var(--sin-cream); }
+
+  /* GAME 3 - Reaction / Porsche GT3 RS: Guards Red + carbon + silver */
+  #screen-game3 .game-screen {
+    background:
+      radial-gradient(ellipse at 50% 0%, #2a0003 0%, transparent 50%),
+      radial-gradient(ellipse at 100% 100%, #1a0002 0%, transparent 40%),
+      linear-gradient(160deg, #0a0000 0%, #141414 50%, #080808 100%);
+  }
+  #screen-game3 .game-screen::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(
+        -15deg,
+        transparent 0px, transparent 80px,
+        rgba(228,5,33,0.04) 80px, rgba(228,5,33,0.04) 81px
+      ),
+      repeating-linear-gradient(
+        75deg,
+        transparent 0px, transparent 120px,
+        rgba(184,187,190,0.02) 120px, rgba(184,187,190,0.02) 121px
+      );
+    pointer-events: none;
+  }
+  #screen-game3 .game-label { color: var(--por-silver); }
+  #screen-game3 .game-title {
+    background: linear-gradient(135deg, #ffffff, var(--por-silver), var(--por-red));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  #screen-game3 .game-card {
+    background: rgba(10,0,0,0.85);
+    border: 1px solid rgba(228,5,33,0.3);
+    box-shadow: 0 0 30px rgba(228,5,33,0.08);
+  }
+  #reaction-area {
+    border-color: rgba(228,5,33,0.3) !important;
+  }
+  #reaction-area.waiting { background: #1a0002 !important; }
+  #reaction-area.go { background: #003300 !important; border-color: #00ff44 !important; box-shadow: 0 0 30px rgba(0,255,68,0.3) !important; }
+  #screen-game3 .reaction-score-display { color: var(--por-red); }
+  #screen-game3 .rr-dot.done-r { background: var(--por-red); box-shadow: 0 0 6px var(--por-red); }
+
+  .game-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .game-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 8vw, 4rem);
+    text-align: center;
+    line-height: 1;
+  }
+
+  .game-card {
+    background: var(--gray2);
+    border: 1px solid #333;
+    padding: 2rem;
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+  }
+
+  /* ── MINIGAME 1: DATE GUESS ── */
+  .date-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .date-btn {
+    padding: 1rem;
+    background: transparent;
+    border: 1px solid #444;
+    color: var(--white);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .date-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .date-btn.wrong { border-color: var(--red); color: var(--red); animation: shake 0.3s; }
+  .date-btn.correct { border-color: #22c55e; color: #22c55e; background: #22c55e15; }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+
+  .attempt-dots {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+
+  .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #444;
+    transition: background 0.3s;
+  }
+  .dot.used { background: var(--red); }
+
+  /* ── MINIGAME 2: QUIZ ── */
+  .quiz-progress {
+    display: flex;
+    gap: 0.4rem;
+    justify-content: center;
+  }
+
+  .qp-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #444;
+    transition: background 0.3s;
+  }
+  .qp-dot.done { background: var(--gold); }
+  .qp-dot.active { background: var(--white); }
+
+  .quiz-q {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 1.5rem 0 1rem;
+    color: var(--white);
+  }
+
+  .quiz-theme-tag {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 0.2rem 0.6rem;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+  }
+
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-top: 1rem;
+  }
+
+  .quiz-btn {
+    padding: 0.85rem 1rem;
+    background: transparent;
+    border: 1px solid #444;
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+  }
+  .quiz-btn:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); padding-left: 1.4rem; }
+  .quiz-btn.correct-ans { border-color: #22c55e; color: #22c55e; background: #22c55e10; }
+  .quiz-btn.wrong-ans { border-color: var(--red); color: var(--red); background: #cc000010; }
+  .quiz-btn:disabled { cursor: not-allowed; }
+
+  .quiz-feedback {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    min-height: 1.5rem;
+    color: var(--gold);
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* ── MINIGAME 3: REACTION ── */
+  #reaction-area {
+    width: 100%;
+    max-width: 360px;
+    height: 200px;
+    background: var(--black);
+    border: 1px solid #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.1s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #reaction-area.waiting { background: #1a0000; }
+  #reaction-area.go { background: #003300; }
+  #reaction-area.done { background: #1a1a00; }
+
+  .reaction-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    pointer-events: none;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .reaction-score-display {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--gold);
+    margin-top: 0.5rem;
+    text-align: center;
+    min-height: 1.5rem;
+  }
+
+  .reaction-rounds {
+    display: flex;
+    gap: 0.4rem;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+
+  .rr-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #333;
+  }
+  .rr-dot.done-r { background: var(--gold); }
+
+  /* ── COUNTDOWN SCREEN ── */
+  #screen-countdown {
+    background:
+      radial-gradient(ellipse at 0% 0%, #1a0000 0%, transparent 45%),
+      radial-gradient(ellipse at 100% 0%, #220000 0%, transparent 40%),
+      radial-gradient(ellipse at 50% 100%, #0a0600 0%, transparent 50%),
+      linear-gradient(160deg, #0d0000 0%, #080400 60%, #050000 100%);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  /* Ferrari Prancing Horse silhouette hint */
+  #screen-countdown::before {
+    content: '🐴';
+    position: absolute;
+    bottom: -10px;
+    right: 10px;
+    font-size: 180px;
+    opacity: 0.03;
+    pointer-events: none;
+    transform: scaleX(-1);
+    filter: grayscale(1);
+    line-height: 1;
+    z-index: 0;
+  }
+
+  /* Racing stripe accent top */
+  #screen-countdown::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--fer-red) 0%, var(--fer-red) 30%, var(--fer-yellow) 30%, var(--fer-yellow) 35%, #fff 35%, #fff 65%, var(--fer-yellow) 65%, var(--fer-yellow) 70%, var(--fer-red) 70%, var(--fer-red) 100%);
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .cd-stripe {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--fer-red), var(--fer-yellow), #fff, var(--mad-gold), var(--fer-red));
+    background-size: 300%;
+    animation: stripe-move 2s linear infinite;
+    box-shadow: 0 0 12px rgba(220,0,0,0.5);
+  }
+
+  @keyframes stripe-move {
+    0% { background-position: 0%; }
+    100% { background-position: 200%; }
+  }
+
+  .cd-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    color: var(--fer-yellow);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 10px rgba(255,201,6,0.4);
+  }
+
+  .cd-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 16vw, 10rem);
+    line-height: 0.85;
+    color: var(--white);
+    position: relative;
+  }
+
+  .cd-name::after {
+    content: 'KEN';
+    position: absolute;
+    inset: 0;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--fer-red);
+    transform: translate(3px, 3px);
+    z-index: -1;
+  }
+
+  .cd-grid {
+    display: flex;
+    gap: 0.5rem;
+    margin: 2rem 0;
+    width: 100%;
+    max-width: 500px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .cd-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  /* LCD screen container */
+  .cd-num-wrap {
+    background: #060e06;
+    border: 1.5px solid #1a2e1a;
+    border-radius: 6px;
+    padding: 0.6rem 0.8rem;
+    position: relative;
+    box-shadow:
+      0 0 0 1px #0a0a0a,
+      inset 0 0 12px rgba(0,255,60,0.04),
+      0 0 20px rgba(0,200,50,0.08);
+    min-width: 72px;
+    text-align: center;
+  }
+
+  /* Ghost digits (dim background digits) */
+  .cd-num-wrap::before {
+    content: '88';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(2.2rem, 7vw, 3.2rem);
+    color: rgba(0,255,60,0.07);
+    pointer-events: none;
+    letter-spacing: 0.05em;
+  }
+
+  .cd-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(2.2rem, 7vw, 3.2rem);
+    color: #00ff3c;
+    display: block;
+    line-height: 1;
+    letter-spacing: 0.05em;
+    text-shadow:
+      0 0 8px rgba(0,255,60,0.9),
+      0 0 20px rgba(0,255,60,0.5),
+      0 0 40px rgba(0,255,60,0.2);
+    position: relative;
+    z-index: 1;
+    transition: all 0.1s;
+  }
+
+  .cd-label-unit {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.25em;
+    color: #00aa28;
+    text-transform: uppercase;
+    text-shadow: 0 0 6px rgba(0,255,60,0.4);
+  }
+
+  /* Colon separator between units */
+  .cd-colon {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(1.8rem, 6vw, 2.8rem);
+    color: #00ff3c;
+    text-shadow: 0 0 8px rgba(0,255,60,0.8);
+    opacity: 1;
+    animation: colon-blink 1s step-end infinite;
+    padding-bottom: 1.4rem;
+    user-select: none;
+  }
+  @keyframes colon-blink { 0%,100%{opacity:1} 50%{opacity:0.15} }
+
+  /* birthday mode */
+  .cd-unit.bday-mode .cd-num-wrap {
+    border-color: var(--gold);
+    box-shadow: 0 0 20px rgba(200,168,75,0.3), inset 0 0 10px rgba(200,168,75,0.05);
+  }
+  .cd-unit.bday-mode .cd-num {
+    color: var(--gold);
+    text-shadow: 0 0 8px rgba(200,168,75,0.9), 0 0 20px rgba(200,168,75,0.5);
+  }
+  @keyframes pulse-gold { to { box-shadow: 0 0 30px rgba(200,168,75,0.5); } }
+
+  /* ── CHAT ANIMATION ── */
+  .chat-wrap {
+    width: 100%;
+    max-width: 360px;
+    background: #111;
+    border: 1px solid #222;
+    overflow: hidden;
+  }
+
+  .chat-header {
+    background: #075E54;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  .chat-avatar {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+  }
+
+  .chat-body {
+    padding: 1rem;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    background: #0a1a12;
+  }
+
+  .bubble {
+    max-width: 80%;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    border-radius: 8px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.4s, transform 0.4s;
+    position: relative;
+  }
+
+  .bubble.show { opacity: 1; transform: translateY(0); }
+
+  .bubble.sent {
+    background: #005C4B;
+    color: var(--white);
+    align-self: flex-end;
+    border-bottom-right-radius: 2px;
+  }
+
+  .bubble.received {
+    background: #202C33;
+    color: var(--white);
+    align-self: flex-start;
+    border-bottom-left-radius: 2px;
+  }
+
+  .bubble-time {
+    font-size: 0.6rem;
+    color: #8899AA;
+    margin-top: 0.3rem;
+    text-align: right;
+  }
+
+  .typing-indicator {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    padding: 0.6rem 0.9rem;
+    background: #202C33;
+    border-radius: 8px;
+    border-bottom-left-radius: 2px;
+    align-self: flex-start;
+    opacity: 0;
+    transition: opacity 0.3s;
+    width: 56px;
+  }
+  .typing-indicator.show { opacity: 1; }
+  .typing-dot { width: 7px; height: 7px; border-radius: 50%; background: #8899AA; animation: typing-bounce 1s infinite; }
+  .typing-dot:nth-child(2) { animation-delay: 0.15s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes typing-bounce { 0%,80%,100% { transform: scale(0.8); opacity: 0.5; } 40% { transform: scale(1.1); opacity: 1; } }
+
+  /* ── WA BUTTON ── */
+  .wa-section {
+    margin-top: 2rem;
+    text-align: center;
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .wa-note {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: #555;
+    letter-spacing: 0.15em;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+
+  .wa-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background: #25D366;
+    color: var(--black);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    width: 100%;
+    justify-content: center;
+  }
+  .wa-btn:hover { background: #1da851; transform: translateY(-2px); }
+  .wa-btn.disabled {
+    background: #2a2a2a;
+    color: #555;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .wa-countdown-note {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: #555;
+    margin-top: 0.75rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── CONFETTI ── */
+  .confetti-piece {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    pointer-events: none;
+    z-index: 9999;
+    animation: confetti-fall linear forwards;
+  }
+
+  @keyframes confetti-fall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* ── RESULT OVERLAY ── */
+  .result-box {
+    padding: 1.5rem;
+    background: var(--gray2);
+    border: 1px solid #333;
+    text-align: center;
+    display: none;
+    width: 100%;
+    max-width: 500px;
+  }
+  .result-box.show { display: block; }
+
+  .result-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .result-sub {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 1.5rem;
+  }
+
+  .next-btn {
+    padding: 0.85rem 2.5rem;
+    background: var(--gold);
+    color: var(--black);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.08em;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+  }
+  .next-btn:hover { background: var(--white); transform: translateY(-2px); }
+
+  /* ── SCORE BAR ── */
+  .score-bar {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    text-align: right;
+    width: 100%;
+    max-width: 500px;
+    padding-right: 0.25rem;
+  }
+
+  /* ── BIRTHDAY BANNER ── */
+  .bday-banner {
+    display: none;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  .bday-banner.show { display: block; }
+  .bday-banner-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.5rem, 6vw, 3rem);
+    color: var(--gold);
+    animation: bday-glow 2s ease-in-out infinite alternate;
+  }
+  @keyframes bday-glow {
+    from { text-shadow: 0 0 10px var(--gold); }
+    to { text-shadow: 0 0 30px var(--gold), 0 0 60px #ff8c0055; }
+  }
+
+
+  /* ── PER-SCREEN RESULT BOX COLORS ── */
+  #screen-game1 .result-box {
+    background: rgba(10,0,20,0.95);
+    border-color: rgba(204,0,0,0.4);
+  }
+  #screen-game1 .next-btn {
+    background: linear-gradient(135deg, var(--sp-red), #8B0000);
+    color: #fff;
+    box-shadow: 0 0 20px rgba(204,0,0,0.4);
+  }
+  #screen-game1 .next-btn:hover { background: linear-gradient(135deg, #ff2222, var(--sp-red)); }
+
+  #screen-game2 .result-box {
+    background: rgba(8,6,15,0.95);
+    border-color: rgba(212,175,55,0.4);
+  }
+  #screen-game2 .next-btn {
+    background: linear-gradient(135deg, var(--sin-gold), #a07820);
+    color: #0d1b3e;
+    box-shadow: 0 0 20px rgba(212,175,55,0.3);
+  }
+  #screen-game2 .next-btn:hover { background: linear-gradient(135deg, #e8c840, var(--sin-gold)); color: #0d1b3e; }
+
+  #screen-game3 .result-box {
+    background: rgba(10,0,0,0.95);
+    border-color: rgba(228,5,33,0.4);
+  }
+  #screen-game3 .next-btn {
+    background: linear-gradient(135deg, var(--por-red), #8B0010);
+    color: #fff;
+    box-shadow: 0 0 20px rgba(228,5,33,0.4);
+  }
+  #screen-game3 .next-btn:hover { background: linear-gradient(135deg, #ff1a30, var(--por-red)); }
+
+  /* ── COUNTDOWN LCD: Ferrari red glow on birthday ── */
+  .cd-unit.bday-mode .cd-num-wrap {
+    border-color: var(--fer-red) !important;
+    box-shadow: 0 0 25px rgba(220,0,0,0.4), inset 0 0 10px rgba(220,0,0,0.05) !important;
+  }
+  .cd-unit.bday-mode .cd-num {
+    color: var(--fer-red) !important;
+    text-shadow: 0 0 8px rgba(220,0,0,0.9), 0 0 25px rgba(220,0,0,0.5) !important;
+  }
+
+  /* WA button: themed green stays, add Madrid gold border */
+  #screen-countdown .wa-btn {
+    border: 1px solid rgba(200,155,60,0.3);
+    box-shadow: 0 0 20px rgba(37,211,102,0.2);
+  }
+  #screen-countdown .wa-note { color: var(--fer-yellow); }
+
+  /* Score bar per screen */
+  #screen-game3 .score-bar { color: var(--por-silver); }
+
+</style>
+</head>
+<body>
+
+<!-- ════════════════ SCREEN 0: INTRO ════════════════ -->
+<div id="screen-intro" class="screen active">
+  <div class="intro-web">
+    <svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
+      <g stroke="white" stroke-width="0.5" fill="none" opacity="0.8">
+        <line x1="400" y1="300" x2="0" y2="0"/><line x1="400" y1="300" x2="200" y2="0"/>
+        <line x1="400" y1="300" x2="400" y2="0"/><line x1="400" y1="300" x2="600" y2="0"/>
+        <line x1="400" y1="300" x2="800" y2="0"/><line x1="400" y1="300" x2="800" y2="150"/>
+        <line x1="400" y1="300" x2="800" y2="300"/><line x1="400" y1="300" x2="800" y2="450"/>
+        <line x1="400" y1="300" x2="800" y2="600"/><line x1="400" y1="300" x2="600" y2="600"/>
+        <line x1="400" y1="300" x2="400" y2="600"/><line x1="400" y1="300" x2="200" y2="600"/>
+        <line x1="400" y1="300" x2="0" y2="600"/><line x1="400" y1="300" x2="0" y2="450"/>
+        <line x1="400" y1="300" x2="0" y2="300"/><line x1="400" y1="300" x2="0" y2="150"/>
+        <ellipse cx="400" cy="300" rx="80" ry="80"/>
+        <ellipse cx="400" cy="300" rx="160" ry="155"/>
+        <ellipse cx="400" cy="300" rx="250" ry="240"/>
+        <ellipse cx="400" cy="300" rx="350" ry="330"/>
+        <ellipse cx="400" cy="300" rx="450" ry="420"/>
+      </g>
+    </svg>
+  </div>
+
+  <div style="position:relative;z-index:2;text-align:center;">
+    <p class="intro-sub">A special page for</p>
+    <h1 class="intro-title">KEN'S<br><span>DAY</span></h1>
+    <p class="intro-sub" style="margin-top:0.5rem;">July 6 · Complete the challenge to unlock</p>
+    <div class="theme-icons">
+      <span class="theme-icon">🕷️</span>
+      <span class="theme-icon">🎷</span>
+      <span class="theme-icon">🏎️</span>
+      <span class="theme-icon">🐴</span>
+      <span class="theme-icon">⚽</span>
+      <span class="theme-icon">🏆</span>
+    </div>
+    <button class="intro-btn" onclick="soundSpider(); goTo('screen-game1')">START THE CHALLENGE</button>
+  </div>
+</div>
+
+<!-- ════════════════ SCREEN 1: DATE GUESS ════════════════ -->
+<div id="screen-game1" class="screen">
+  <div class="game-screen">
+    <p class="game-label">Challenge 01 of 03</p>
+    <h2 class="game-title">GUESS THE<br>BIRTHDAY DATE</h2>
+
+    <div class="game-card">
+      <p style="font-size:0.85rem;color:#888;margin-bottom:0.5rem;">What day is Ken born?</p>
+      <p style="font-size:0.75rem;color:#555;font-family:'Space Mono',monospace;">Month: July</p>
+
+      <div class="attempt-dots" id="attempt-dots">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+
+      <div class="date-options" id="date-options">
+        <button class="date-btn" onclick="guessDate(this, 4)">4</button>
+        <button class="date-btn" onclick="guessDate(this, 6)">6</button>
+        <button class="date-btn" onclick="guessDate(this, 11)">11</button>
+        <button class="date-btn" onclick="guessDate(this, 19)">19</button>
+        <button class="date-btn" onclick="guessDate(this, 23)">23</button>
+        <button class="date-btn" onclick="guessDate(this, 29)">29</button>
+      </div>
+    </div>
+
+    <div class="result-box" id="result-game1">
+      <p class="result-title" id="result-g1-title">—</p>
+      <p class="result-sub" id="result-g1-sub">—</p>
+      <button class="next-btn" onclick="goTo('screen-game2')">NEXT CHALLENGE →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ SCREEN 2: QUIZ ════════════════ -->
+<div id="screen-game2" class="screen">
+  <div class="game-screen">
+    <p class="game-label">Challenge 02 of 03</p>
+    <h2 class="game-title">KEN'S WORLD<br>QUIZ</h2>
+
+    <div class="score-bar" id="quiz-score-bar">Score: 0 / 6</div>
+
+    <div class="game-card" id="quiz-card">
+      <div class="quiz-progress" id="quiz-progress"></div>
+      <div class="quiz-theme-tag" id="quiz-theme-tag">—</div>
+      <p class="quiz-q" id="quiz-question">Loading...</p>
+      <div class="quiz-options" id="quiz-options"></div>
+      <p class="quiz-feedback" id="quiz-feedback"></p>
+    </div>
+
+    <div class="result-box" id="result-game2">
+      <p class="result-title" id="result-g2-title">—</p>
+      <p class="result-sub" id="result-g2-sub">—</p>
+      <button class="next-btn" onclick="goTo('screen-game3')">FINAL CHALLENGE →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ SCREEN 3: REACTION GAME ════════════════ -->
+<div id="screen-game3" class="screen">
+  <div class="game-screen">
+    <p class="game-label">Challenge 03 of 03</p>
+    <h2 class="game-title">REACTION<br>TEST</h2>
+    <p style="font-size:0.8rem;color:#666;text-align:center;max-width:300px;">Hit the box the moment it turns GREEN. 3 rounds.</p>
+
+    <div class="reaction-rounds" id="reaction-rounds">
+      <div class="rr-dot"></div><div class="rr-dot"></div><div class="rr-dot"></div>
+    </div>
+
+    <div id="reaction-area" onclick="reactionClick()">
+      <span class="reaction-text" id="reaction-text">TAP TO<br>START</span>
+    </div>
+    <p class="reaction-score-display" id="reaction-score-display"></p>
+
+    <div class="result-box" id="result-game3">
+      <p class="result-title" id="result-g3-title">—</p>
+      <p class="result-sub" id="result-g3-sub">—</p>
+      <button class="next-btn" onclick="goTo('screen-countdown')">🎂 UNLOCK COUNTDOWN →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ SCREEN 4: COUNTDOWN + CHAT ════════════════ -->
+<div id="screen-countdown" class="screen">
+  <div class="cd-stripe"></div>
+
+  <div style="width:100%;max-width:500px;padding:2rem 1.5rem;text-align:center;display:flex;flex-direction:column;align-items:center;gap:2rem;">
+
+    <div class="bday-banner" id="bday-banner">
+      <p class="bday-banner-text">🎉 HAPPY BIRTHDAY KEN! 🎉</p>
+    </div>
+
+    <div>
+      <p class="cd-eyebrow">Countdown to</p>
+      <h1 class="cd-name">KEN</h1>
+      <p style="font-family:'Space Mono',monospace;font-size:0.7rem;color:#555;letter-spacing:0.2em;margin-top:0.5rem;">JULY 6 · THE DAY</p>
+    </div>
+
+    <div class="cd-grid" id="cd-grid">
+      <div class="cd-unit">
+        <div class="cd-num-wrap"><span class="cd-num" id="cd-days">--</span></div>
+        <p class="cd-label-unit">Days</p>
+      </div>
+      <span class="cd-colon">:</span>
+      <div class="cd-unit">
+        <div class="cd-num-wrap"><span class="cd-num" id="cd-hours">--</span></div>
+        <p class="cd-label-unit">Hours</p>
+      </div>
+      <span class="cd-colon">:</span>
+      <div class="cd-unit">
+        <div class="cd-num-wrap"><span class="cd-num" id="cd-mins">--</span></div>
+        <p class="cd-label-unit">Mins</p>
+      </div>
+      <span class="cd-colon">:</span>
+      <div class="cd-unit">
+        <div class="cd-num-wrap"><span class="cd-num" id="cd-secs">--</span></div>
+        <p class="cd-label-unit">Secs</p>
+      </div>
+    </div>
+
+    <!-- CHAT ANIMATION -->
+    <div style="width:100%;max-width:360px;">
+      <p style="font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;color:#555;text-transform:uppercase;margin-bottom:0.75rem;">A message for you</p>
+      <div class="chat-wrap">
+        <div class="chat-header">
+          <div class="chat-avatar">👤</div>
+          <div>
+            <div style="font-size:0.9rem;font-weight:600;">My Twin</div>
+            <div style="font-size:0.7rem;opacity:0.7;" id="chat-status">online</div>
+          </div>
+        </div>
+        <div class="chat-body" id="chat-body">
+          <div class="typing-indicator" id="typing-indicator">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WA BUTTON -->
+    <div class="wa-section">
+      <p class="wa-note" id="wa-note-text">Available July 5–7</p>
+      <button class="wa-btn disabled" id="wa-btn" onclick="sendWA()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        SEND BIRTHDAY WISH
+      </button>
+      <p class="wa-countdown-note" id="wa-locked-msg"></p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ════════ SOUND ENGINE ════════
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let actx = null;
+
+function getCtx() {
+  if (!actx) actx = new AudioCtx();
+  return actx;
+}
+
+function playTone(freq, type, duration, vol, startFreq) {
+  try {
+    const ctx = getCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = type || 'sine';
+    if (startFreq) {
+      osc.frequency.setValueAtTime(startFreq, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(freq, ctx.currentTime + duration * 0.5);
+    } else {
+      osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    }
+    gain.gain.setValueAtTime(vol || 0.18, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + duration);
+  } catch(e) {}
+}
+
+// ── Noise buffer helper ──
+function makeNoise(ctx, dur, vol, filterFreq, filterType) {
+  const sr = ctx.sampleRate;
+  const buf = ctx.createBuffer(1, sr * dur, sr);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  const src = ctx.createBufferSource();
+  src.buffer = buf;
+  const gain = ctx.createGain();
+  gain.gain.value = vol;
+  if (filterFreq) {
+    const filt = ctx.createBiquadFilter();
+    filt.type = filterType || 'bandpass';
+    filt.frequency.value = filterFreq;
+    filt.Q.value = 1.5;
+    src.connect(filt);
+    filt.connect(gain);
+  } else {
+    src.connect(gain);
+  }
+  gain.connect(ctx.destination);
+  return { src, gain };
+}
+
+// ── PORSCHE 911 GT3 RS — flat-6 high-rev scream ──
+// Flat-6: even firing, raspy midrange, 9000rpm screamer
+function soundPorsche() {
+  try {
+    const ctx = getCtx();
+    const t = ctx.currentTime;
+    const dur = 3.0;
+    const sr = ctx.sampleRate;
+
+    // ── Flat-6 engine: key is rapid amplitude pulsing (6 cylinders firing evenly) ──
+    // We build the "rev" from scratch using noise + AM modulation
+
+    // Base: broadband noise shaped like engine breath
+    const engBuf = ctx.createBuffer(1, sr * dur, sr);
+    const ed = engBuf.getChannelData(0);
+    for (let i = 0; i < ed.length; i++) ed[i] = Math.random() * 2 - 1;
+    const engSrc = ctx.createBufferSource();
+    engSrc.buffer = engBuf;
+
+    // Filter: bandpass sweeping up with RPM (intake roar)
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.setValueAtTime(200, t);
+    bp.frequency.exponentialRampToValueAtTime(600, t + 1.2);
+    bp.frequency.exponentialRampToValueAtTime(2200, t + 2.2);
+    bp.frequency.exponentialRampToValueAtTime(1400, t + dur);
+    bp.Q.value = 2;
+
+    // AM oscillator = cylinder pulse (flat-6: 3 pulses per rev, smooth)
+    const am = ctx.createOscillator();
+    am.type = 'sine';
+    am.frequency.setValueAtTime(15, t);      // idle: ~500rpm × 3 / 60
+    am.frequency.linearRampToValueAtTime(25, t + 0.5);
+    am.frequency.linearRampToValueAtTime(120, t + 1.8); // building up
+    am.frequency.linearRampToValueAtTime(270, t + 2.2); // ~9000rpm peak
+    am.frequency.linearRampToValueAtTime(160, t + dur);
+
+    const amGain = ctx.createGain();
+    amGain.gain.value = 0.5;
+    am.connect(amGain);
+
+    // AM depth control
+    const amDepth = ctx.createGain();
+    amDepth.gain.setValueAtTime(0, t);
+    amDepth.gain.linearRampToValueAtTime(0.35, t + 0.3);
+    amDepth.gain.linearRampToValueAtTime(0.5, t + 2.2);
+    amDepth.gain.linearRampToValueAtTime(0.2, t + dur);
+
+    amGain.connect(amDepth);
+    engSrc.connect(bp);
+
+    // Merge AM with engine: use gain node as AM destination
+    const merge = ctx.createGain();
+    merge.gain.value = 0.3;
+    bp.connect(merge);
+    amDepth.connect(merge.gain); // AM modulates gain
+
+    // High freq exhaust scream layer
+    const scream = ctx.createOscillator();
+    scream.type = 'sawtooth';
+    scream.frequency.setValueAtTime(300, t);
+    scream.frequency.exponentialRampToValueAtTime(3800, t + 2.2);
+    scream.frequency.exponentialRampToValueAtTime(2200, t + dur);
+    const screamGain = ctx.createGain();
+    screamGain.gain.setValueAtTime(0, t);
+    screamGain.gain.linearRampToValueAtTime(0.0, t + 0.8);
+    screamGain.gain.linearRampToValueAtTime(0.18, t + 2.0);
+    screamGain.gain.linearRampToValueAtTime(0.22, t + 2.2);
+    screamGain.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    const screamFilt = ctx.createBiquadFilter();
+    screamFilt.type = 'highpass'; screamFilt.frequency.value = 1200;
+    scream.connect(screamFilt); screamFilt.connect(screamGain); screamGain.connect(ctx.destination);
+
+    merge.connect(ctx.destination);
+    engSrc.start(t);
+    am.start(t); am.stop(t + dur);
+    scream.start(t); scream.stop(t + dur);
+  } catch(e) {}
+}
+
+// ── FERRARI 458 SPECIALE — V8 4.5L NA bark + scream ──
+function soundFerrari() {
+  try {
+    const ctx = getCtx();
+    const t = ctx.currentTime;
+    const dur = 3.2;
+    const sr = ctx.sampleRate;
+
+    // ── V8 startup bark: sharp transient knock ──
+    const barkBuf = ctx.createBuffer(1, sr * 0.08, sr);
+    const bd = barkBuf.getChannelData(0);
+    for (let i = 0; i < bd.length; i++) {
+      bd[i] = (Math.random() * 2 - 1) * Math.exp(-i / (sr * 0.012));
+    }
+    const barkSrc = ctx.createBufferSource();
+    barkSrc.buffer = barkBuf;
+    const barkG = ctx.createGain();
+    barkG.gain.value = 0.7;
+    const barkFilt = ctx.createBiquadFilter();
+    barkFilt.type = 'lowpass'; barkFilt.frequency.value = 400;
+    barkSrc.connect(barkFilt); barkFilt.connect(barkG); barkG.connect(ctx.destination);
+    barkSrc.start(t);
+
+    // ── V8 main engine: noise + AM, but V8 is UNEVEN (cross-plane crank) ──
+    // Cross-plane = pairs of cylinders fire unevenly → choppier, more aggressive pulse
+    const engBuf = ctx.createBuffer(1, sr * dur, sr);
+    const ed = engBuf.getChannelData(0);
+    for (let i = 0; i < ed.length; i++) ed[i] = Math.random() * 2 - 1;
+    const engSrc = ctx.createBufferSource();
+    engSrc.buffer = engBuf;
+
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.setValueAtTime(150, t);
+    bp.frequency.exponentialRampToValueAtTime(500, t + 0.8);
+    bp.frequency.exponentialRampToValueAtTime(2800, t + 2.4);
+    bp.frequency.exponentialRampToValueAtTime(1800, t + dur);
+    bp.Q.value = 1.5;
+
+    // V8 AM: 4 pulses per rev (cross-plane), choppier than flat-6
+    const am = ctx.createOscillator();
+    am.type = 'square'; // square wave = hard chop = V8 character
+    am.frequency.setValueAtTime(12, t);
+    am.frequency.linearRampToValueAtTime(20, t + 0.4);
+    am.frequency.linearRampToValueAtTime(100, t + 1.6);
+    am.frequency.linearRampToValueAtTime(290, t + 2.4); // ~9000rpm × 4 / 60
+    am.frequency.linearRampToValueAtTime(180, t + dur);
+
+    const amGain = ctx.createGain();
+    amGain.gain.value = 0.5;
+    am.connect(amGain);
+
+    const amDepth = ctx.createGain();
+    amDepth.gain.setValueAtTime(0, t);
+    amDepth.gain.linearRampToValueAtTime(0.4, t + 0.2);
+    amDepth.gain.linearRampToValueAtTime(0.55, t + 2.4);
+    amDepth.gain.linearRampToValueAtTime(0.2, t + dur);
+    amGain.connect(amDepth);
+
+    const merge = ctx.createGain();
+    merge.gain.value = 0.35;
+    bp.connect(merge);
+    amDepth.connect(merge.gain);
+    engSrc.connect(bp);
+
+    // Exhaust scream — V8 is more mid-range than flat-6, less "whistly"
+    const scream = ctx.createOscillator();
+    scream.type = 'sawtooth';
+    scream.frequency.setValueAtTime(200, t);
+    scream.frequency.exponentialRampToValueAtTime(2800, t + 2.4);
+    scream.frequency.exponentialRampToValueAtTime(1600, t + dur);
+    const screamG = ctx.createGain();
+    screamG.gain.setValueAtTime(0, t);
+    screamG.gain.linearRampToValueAtTime(0.0, t + 0.6);
+    screamG.gain.linearRampToValueAtTime(0.22, t + 2.2);
+    screamG.gain.linearRampToValueAtTime(0.25, t + 2.4);
+    screamG.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    const screamFilt = ctx.createBiquadFilter();
+    screamFilt.type = 'bandpass'; screamFilt.frequency.value = 1800; screamFilt.Q.value = 1;
+    scream.connect(screamFilt); screamFilt.connect(screamG); screamG.connect(ctx.destination);
+
+    merge.connect(ctx.destination);
+    engSrc.start(t);
+    am.start(t); am.stop(t + dur);
+    scream.start(t); scream.stop(t + dur);
+  } catch(e) {}
+}
+
+// ── SPIDERMAN — web swing whoosh ──
+function soundSpider() {
+  try {
+    const ctx = getCtx();
+    const t = ctx.currentTime;
+    // whoosh: filtered noise sweep
+    const { src: noise, gain: nGain } = makeNoise(ctx, 0.6, 0, 800, 'bandpass');
+    const filt = ctx.createBiquadFilter();
+    filt.type = 'bandpass';
+    filt.frequency.setValueAtTime(200, t);
+    filt.frequency.exponentialRampToValueAtTime(2400, t + 0.25);
+    filt.frequency.exponentialRampToValueAtTime(400, t + 0.6);
+    filt.Q.value = 2;
+    nGain.gain.setValueAtTime(0.4, t);
+    nGain.gain.linearRampToValueAtTime(0.6, t + 0.2);
+    nGain.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
+    // web "thwip" tone
+    const osc = ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1200, t);
+    osc.frequency.exponentialRampToValueAtTime(200, t + 0.15);
+    const og = ctx.createGain();
+    og.gain.setValueAtTime(0.25, t);
+    og.gain.exponentialRampToValueAtTime(0.001, t + 0.2);
+    osc.connect(og); og.connect(ctx.destination);
+    noise.start(t);
+    osc.start(t); osc.stop(t + 0.2);
+  } catch(e) {}
+}
+
+// ── FRANK SINATRA — brass stab (Big Band horn hit) ──
+function soundSinatra() {
+  try {
+    const ctx = getCtx();
+    const t = ctx.currentTime;
+    // Brass chord: Bb major voicing (iconic big band)
+    const notes = [233, 293, 349, 466, 587]; // Bb3, D4, F4, Bb4, D5
+    notes.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.value = freq;
+      // Brass "sforzando" envelope: fast attack, short decay
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(0.14 - i * 0.01, t + 0.015);
+      gain.gain.linearRampToValueAtTime(0.08, t + 0.12);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.55);
+      // Warm filter to simulate brass
+      const filt = ctx.createBiquadFilter();
+      filt.type = 'lowpass';
+      filt.frequency.setValueAtTime(800, t);
+      filt.frequency.linearRampToValueAtTime(2200, t + 0.03);
+      osc.connect(filt); filt.connect(gain); gain.connect(ctx.destination);
+      osc.start(t); osc.stop(t + 0.6);
+    });
+    // snare crack
+    const { src: snare, gain: sg } = makeNoise(ctx, 0.15, 0.22, 3000, 'highpass');
+    sg.gain.setValueAtTime(0.22, t + 0.02);
+    sg.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
+    snare.start(t + 0.02);
+  } catch(e) {}
+}
+
+// ── REAL MADRID — crowd roar + goal horn ──
+function soundMadrid() {
+  try {
+    const ctx = getCtx();
+    const t = ctx.currentTime;
+    const dur = 2.5;
+
+    // ── CROWD: hundreds of random voices = white noise shaped like a roar ──
+    // Key: use HIGHPASS noise (cuts engine-like lows), modulate amplitude to
+    // simulate the "wave" swell of a crowd going wild
+    const sr = ctx.sampleRate;
+    const crowdBuf = ctx.createBuffer(2, sr * dur, sr);
+    for (let ch = 0; ch < 2; ch++) {
+      const d = crowdBuf.getChannelData(ch);
+      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    }
+    const crowdSrc = ctx.createBufferSource();
+    crowdSrc.buffer = crowdBuf;
+
+    // Highpass at 800hz removes low rumble → makes it sound like human voices
+    const hp = ctx.createBiquadFilter();
+    hp.type = 'highpass';
+    hp.frequency.value = 800;
+    hp.Q.value = 0.5;
+
+    // Bandpass center around 2-3khz = human voice formant range
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = 2200;
+    bp.Q.value = 0.4;
+
+    // LFO-style amplitude modulation to simulate crowd wave surging
+    const crowdGain = ctx.createGain();
+    crowdGain.gain.setValueAtTime(0, t);
+    crowdGain.gain.linearRampToValueAtTime(0.15, t + 0.4);
+    crowdGain.gain.linearRampToValueAtTime(0.35, t + 0.9);
+    crowdGain.gain.linearRampToValueAtTime(0.45, t + 1.4);
+    crowdGain.gain.linearRampToValueAtTime(0.3, t + 2.0);
+    crowdGain.gain.exponentialRampToValueAtTime(0.001, t + dur);
+
+    crowdSrc.connect(hp);
+    hp.connect(bp);
+    bp.connect(crowdGain);
+    crowdGain.connect(ctx.destination);
+    crowdSrc.start(t);
+
+    // Second layer: mid-range crowd chant texture
+    const crowdBuf2 = ctx.createBuffer(1, sr * dur, sr);
+    const d2 = crowdBuf2.getChannelData(0);
+    for (let i = 0; i < d2.length; i++) d2[i] = Math.random() * 2 - 1;
+    const crowdSrc2 = ctx.createBufferSource();
+    crowdSrc2.buffer = crowdBuf2;
+    const bp2 = ctx.createBiquadFilter();
+    bp2.type = 'bandpass';
+    bp2.frequency.value = 1200;
+    bp2.Q.value = 0.8;
+    const cg2 = ctx.createGain();
+    cg2.gain.setValueAtTime(0, t);
+    cg2.gain.linearRampToValueAtTime(0.1, t + 0.6);
+    cg2.gain.linearRampToValueAtTime(0.22, t + 1.2);
+    cg2.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    crowdSrc2.connect(bp2); bp2.connect(cg2); cg2.connect(ctx.destination);
+    crowdSrc2.start(t);
+
+    // ── GOAL HORN: stadium horn (pure sine, loud, sustained) ──
+    // Real Bernabeu horn is a deep foghorn-like blast ~150-180hz
+    const horn = ctx.createOscillator();
+    horn.type = 'sine';
+    horn.frequency.setValueAtTime(155, t + 0.2);
+    horn.frequency.linearRampToValueAtTime(165, t + 0.6);
+
+    const horn2 = ctx.createOscillator(); // harmony
+    horn2.type = 'sine';
+    horn2.frequency.value = 230;
+
+    const hornGain = ctx.createGain();
+    hornGain.gain.setValueAtTime(0, t + 0.2);
+    hornGain.gain.linearRampToValueAtTime(0.45, t + 0.35);
+    hornGain.gain.setValueAtTime(0.45, t + 1.2);
+    hornGain.gain.exponentialRampToValueAtTime(0.001, t + 1.8);
+
+    const hornGain2 = ctx.createGain();
+    hornGain2.gain.setValueAtTime(0, t + 0.25);
+    hornGain2.gain.linearRampToValueAtTime(0.2, t + 0.4);
+    hornGain2.gain.exponentialRampToValueAtTime(0.001, t + 1.6);
+
+    // Slight distortion on horn for stadium speaker effect
+    const hornDist = ctx.createWaveShaper();
+    const hcurve = new Float32Array(128);
+    for (let i = 0; i < 128; i++) {
+      const x = (i * 2) / 128 - 1;
+      hcurve[i] = x * 0.9 + Math.sign(x) * 0.1;
+    }
+    hornDist.curve = hcurve;
+
+    horn.connect(hornDist); hornDist.connect(hornGain); hornGain.connect(ctx.destination);
+    horn2.connect(hornGain2); hornGain2.connect(ctx.destination);
+    horn.start(t + 0.2); horn.stop(t + 1.9);
+    horn2.start(t + 0.25); horn2.stop(t + 1.7);
+
+  } catch(e) {}
+}
+
+// ── FERRARI F1 (Leclerc) — F1 engine whine ──
+function soundF1() {
+  try {
+    const ctx = getCtx();
+    const t = ctx.currentTime;
+    const dur = 2.5;
+    // F1 V6 hybrid: higher pitch, more electric whine
+    const osc1 = ctx.createOscillator();
+    osc1.type = 'sawtooth';
+    osc1.frequency.setValueAtTime(120, t);
+    osc1.frequency.exponentialRampToValueAtTime(1400, t + 1.8);
+    osc1.frequency.exponentialRampToValueAtTime(1600, t + 2.1);
+    osc1.frequency.exponentialRampToValueAtTime(900, t + dur);
+
+    // Electric MGU-K whine
+    const osc2 = ctx.createOscillator();
+    osc2.type = 'sine';
+    osc2.frequency.setValueAtTime(600, t);
+    osc2.frequency.exponentialRampToValueAtTime(4000, t + 1.8);
+    osc2.frequency.exponentialRampToValueAtTime(2000, t + dur);
+
+    const g1 = ctx.createGain();
+    g1.gain.setValueAtTime(0, t);
+    g1.gain.linearRampToValueAtTime(0.3, t + 0.05);
+    g1.gain.linearRampToValueAtTime(0.35, t + 1.8);
+    g1.gain.linearRampToValueAtTime(0.08, t + dur);
+
+    const g2 = ctx.createGain();
+    g2.gain.setValueAtTime(0, t);
+    g2.gain.linearRampToValueAtTime(0.06, t + 0.2);
+    g2.gain.linearRampToValueAtTime(0.12, t + 1.8);
+    g2.gain.exponentialRampToValueAtTime(0.001, t + dur);
+
+    const { src: noise, gain: ng } = makeNoise(ctx, dur, 0, 3000, 'bandpass');
+    ng.gain.setValueAtTime(0.05, t);
+    ng.gain.linearRampToValueAtTime(0.2, t + 1.8);
+    ng.gain.exponentialRampToValueAtTime(0.001, t + dur);
+
+    const wave = ctx.createWaveShaper();
+    const curve = new Float32Array(256);
+    for (let i = 0; i < 256; i++) {
+      const x = (i * 2) / 256 - 1;
+      curve[i] = (Math.PI + 300) * x / (Math.PI + 300 * Math.abs(x));
+    }
+    wave.curve = curve;
+
+    osc1.connect(wave); wave.connect(g1); g1.connect(ctx.destination);
+    osc2.connect(g2); g2.connect(ctx.destination);
+    noise.start(t);
+
+    osc1.start(t); osc1.stop(t + dur);
+    osc2.start(t); osc2.stop(t + dur);
+  } catch(e) {}
+}
+
+// ── Map theme → iconic sound ──
+const themeSounds = {
+  'Spider-Man': soundSpider,
+  'Frank Sinatra': soundSinatra,
+  'Porsche 911 GT3 RS': soundPorsche,
+  'Ferrari 458 Speciale': soundFerrari,
+  'Ferrari & Leclerc': soundF1,
+  'Real Madrid & Gareth Bale': soundMadrid,
+};
+
+function soundCorrect() {
+  playTone(523, 'sine', 0.12, 0.2);
+  setTimeout(() => playTone(659, 'sine', 0.12, 0.18), 100);
+  setTimeout(() => playTone(784, 'sine', 0.22, 0.22), 200);
+}
+
+function soundWrong() {
+  playTone(200, 'sawtooth', 0.25, 0.15, 300);
+}
+
+function soundClick() {
+  playTone(880, 'sine', 0.06, 0.1);
+}
+
+function soundTick() {
+  try {
+    const ctx = getCtx();
+    const buf = ctx.createBuffer(1, ctx.sampleRate * 0.04, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < data.length; i++) {
+      data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.008));
+    }
+    const src = ctx.createBufferSource();
+    const gain = ctx.createGain();
+    src.buffer = buf;
+    gain.gain.value = 0.12;
+    src.connect(gain);
+    gain.connect(ctx.destination);
+    src.start();
+  } catch(e) {}
+}
+
+function soundUnlock() {
+  const notes = [262, 330, 392, 523, 659, 784];
+  notes.forEach((n, i) => setTimeout(() => playTone(n, 'sine', 0.3, 0.15), i * 80));
+}
+
+// ════════ NAVIGATION ════════
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+  if (id === 'screen-game2') initQuiz();
+  if (id === 'screen-game3') initReaction();
+  if (id === 'screen-countdown') { soundUnlock(); initCountdown(); }
+}
+
+// ════════ GAME 1: DATE GUESS ════════
+let g1Attempts = 0;
+const g1MaxAttempts = 3;
+const g1Answer = 6;
+let g1Done = false;
+
+function guessDate(btn, val) {
+  if (g1Done) return;
+  soundClick();
+  if (val === g1Answer) {
+    btn.classList.add('correct');
+    g1Done = true;
+    disableAllDateBtns();
+    setTimeout(soundCorrect, 80);
+    showG1Result(true);
+  } else {
+    btn.classList.add('wrong');
+    btn.disabled = true;
+    g1Attempts++;
+    soundWrong();
+    updateDots();
+    setTimeout(() => btn.classList.remove('wrong'), 500);
+    if (g1Attempts >= g1MaxAttempts) {
+      g1Done = true;
+      disableAllDateBtns();
+      // reveal answer
+      document.querySelectorAll('.date-btn').forEach(b => {
+        if (parseInt(b.textContent) === g1Answer) b.classList.add('correct');
+      });
+      showG1Result(false);
+    }
+  }
+}
+
+function disableAllDateBtns() {
+  document.querySelectorAll('.date-btn').forEach(b => b.disabled = true);
+}
+
+function updateDots() {
+  const dots = document.querySelectorAll('#attempt-dots .dot');
+  dots.forEach((d, i) => { if (i < g1Attempts) d.classList.add('used'); });
+}
+
+function showG1Result(win) {
+  const box = document.getElementById('result-game1');
+  const title = document.getElementById('result-g1-title');
+  const sub = document.getElementById('result-g1-sub');
+  box.classList.add('show');
+  if (win) {
+    title.textContent = '🎯 NICE!';
+    title.style.color = '#22c55e';
+    sub.textContent = 'July 6 it is. Ken locked in.';
+  } else {
+    title.textContent = 'CLOSE ENOUGH 😹';
+    title.style.color = 'var(--gold)';
+    sub.textContent = 'The answer was July 6. Onto the next one.';
+  }
+}
+
+// ════════ GAME 2: QUIZ ════════
+const quizData = [
+  {
+    theme: 'Spider-Man',
+    q: "In the comics, which villain gave Peter Parker the most iconic suit upgrade — the black symbiote?",
+    options: ["The Vulture", "Venom / The Symbiote", "Doctor Octopus", "Electro"],
+    correct: 1,
+    fact: "The alien symbiote first appeared in Secret Wars #8, 1984 🕷️"
+  },
+  {
+    theme: 'Frank Sinatra',
+    q: "Frank Sinatra's signature hat — which style is most associated with him?",
+    options: ["Cowboy hat", "Trilby", "Fedora", "Flat cap"],
+    correct: 2,
+    fact: "Ol' Blue Eyes wore fedoras almost everywhere. Classic. 🎷"
+  },
+  {
+    theme: 'Porsche 911 GT3 RS',
+    q: "The Porsche 911 GT3 RS uses which type of transmission for maximum performance?",
+    options: ["Manual 6-speed", "PDK dual-clutch", "CVT", "Torque converter auto"],
+    correct: 1,
+    fact: "PDK (Porsche Doppelkupplung) — shifts in milliseconds 🏎️"
+  },
+  {
+    theme: 'Ferrari 458 Speciale',
+    q: "The Ferrari 458 Speciale produces how much horsepower from its naturally aspirated V8?",
+    options: ["500 hp", "562 hp", "597 hp", "620 hp"],
+    correct: 1,
+    fact: "562 hp, 9000 rpm redline. One of the last great NA Ferraris 🐴"
+  },
+  {
+    theme: 'Ferrari & Leclerc',
+    q: "Charles Leclerc's first F1 victory came at which legendary circuit?",
+    options: ["Monaco", "Spa-Francorchamps", "Monza", "Silverstone"],
+    correct: 1,
+    fact: "Spa 2019 — two days after Anthoine Hubert's death. Emotional race 🔴"
+  },
+  {
+    theme: 'Real Madrid & Gareth Bale',
+    q: "Gareth Bale's iconic overhead kick in the 2018 Champions League Final was against which club?",
+    options: ["Juventus", "Bayern Munich", "Liverpool", "PSG"],
+    correct: 2,
+    fact: "vs Liverpool in Kyiv. One of the greatest UCL final goals ever ⚽"
+  }
+];
+
+let quizIndex = 0;
+let quizScore = 0;
+let quizAnswered = false;
+
+function initQuiz() {
+  quizIndex = 0;
+  quizScore = 0;
+  quizAnswered = false;
+  renderQuizProgress();
+  renderQuestion();
+}
+
+function renderQuizProgress() {
+  const bar = document.getElementById('quiz-progress');
+  bar.innerHTML = '';
+  quizData.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'qp-dot' + (i < quizIndex ? ' done' : i === quizIndex ? ' active' : '');
+    bar.appendChild(d);
+  });
+}
+
+function renderQuestion() {
+  if (quizIndex >= quizData.length) {
+    showQuizResult();
+    return;
+  }
+  quizAnswered = false;
+  const q = quizData[quizIndex];
+  document.getElementById('quiz-theme-tag').textContent = q.theme;
+  document.getElementById('quiz-question').textContent = q.q;
+  document.getElementById('quiz-feedback').textContent = '';
+  document.getElementById('quiz-score-bar').textContent = `Score: ${quizScore} / ${quizData.length}`;
+  renderQuizProgress();
+  // Play iconic theme sound when question appears
+  const sfx = themeSounds[q.theme];
+  if (sfx) setTimeout(sfx, 300);
+
+  const opts = document.getElementById('quiz-options');
+  opts.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-btn';
+    btn.textContent = opt;
+    btn.onclick = () => answerQuiz(i, btn);
+    opts.appendChild(btn);
+  });
+}
+
+function answerQuiz(i, btn) {
+  if (quizAnswered) return;
+  quizAnswered = true;
+  const q = quizData[quizIndex];
+  const allBtns = document.querySelectorAll('.quiz-btn');
+  allBtns.forEach(b => b.disabled = true);
+
+  if (i === q.correct) {
+    btn.classList.add('correct-ans');
+    quizScore++;
+    soundCorrect();
+    document.getElementById('quiz-feedback').textContent = '✓ ' + q.fact;
+    document.getElementById('quiz-feedback').style.color = '#22c55e';
+  } else {
+    btn.classList.add('wrong-ans');
+    allBtns[q.correct].classList.add('correct-ans');
+    soundWrong();
+    document.getElementById('quiz-feedback').textContent = '✗ ' + q.fact;
+    document.getElementById('quiz-feedback').style.color = 'var(--red)';
+  }
+
+  document.getElementById('quiz-score-bar').textContent = `Score: ${quizScore} / ${quizData.length}`;
+  quizIndex++;
+
+  setTimeout(() => {
+    if (quizIndex < quizData.length) renderQuestion();
+    else showQuizResult();
+  }, 1800);
+}
+
+function showQuizResult() {
+  document.getElementById('quiz-card').style.opacity = '0.3';
+  const box = document.getElementById('result-game2');
+  const title = document.getElementById('result-g2-title');
+  const sub = document.getElementById('result-g2-sub');
+  box.classList.add('show');
+
+  const pct = quizScore / quizData.length;
+  if (pct === 1) {
+    title.textContent = '🔥 PERFECT!';
+    title.style.color = 'var(--gold)';
+    sub.textContent = `${quizScore}/${quizData.length} — Ken would be proud.`;
+  } else if (pct >= 0.5) {
+    title.textContent = `${quizScore}/${quizData.length} — NOT BAD`;
+    title.style.color = 'var(--white)';
+    sub.textContent = "Could've been worse 😹";
+  } else {
+    title.textContent = `${quizScore}/${quizData.length} — YIKES`;
+    title.style.color = 'var(--red)';
+    sub.textContent = "Do you even know Ken bro 💀";
+  }
+}
+
+// ════════ GAME 3: REACTION ════════
+let reactionState = 'idle'; // idle, waiting, go, done-round, finished
+let reactionTimer = null;
+let reactionStart = 0;
+let reactionRound = 0;
+let reactionTimes = [];
+const reactionMaxRounds = 3;
+
+function initReaction() {
+  reactionState = 'idle';
+  reactionRound = 0;
+  reactionTimes = [];
+  document.getElementById('reaction-text').textContent = 'TAP TO\nSTART';
+  document.getElementById('reaction-area').className = '';
+  document.getElementById('reaction-score-display').textContent = '';
+  updateReactionDots();
+}
+
+function reactionClick() {
+  soundClick();
+  if (reactionState === 'idle') {
+    startReactionRound();
+  } else if (reactionState === 'waiting') {
+    // too early
+    clearTimeout(reactionTimer);
+    document.getElementById('reaction-text').textContent = 'TOO EARLY\n💀';
+    document.getElementById('reaction-area').className = 'waiting';
+    setTimeout(() => startReactionRound(), 1200);
+  } else if (reactionState === 'go') {
+    const rt = Date.now() - reactionStart;
+    soundCorrect();
+    reactionTimes.push(rt);
+    reactionRound++;
+    updateReactionDots();
+    document.getElementById('reaction-area').className = 'done';
+    document.getElementById('reaction-area').style.background = '#1a1a00';
+    document.getElementById('reaction-text').textContent = `${rt}ms`;
+    document.getElementById('reaction-score-display').textContent = `Round ${reactionRound}/${reactionMaxRounds}`;
+    reactionState = 'done-round';
+    if (reactionRound >= reactionMaxRounds) {
+      setTimeout(showReactionResult, 1000);
+    } else {
+      setTimeout(() => startReactionRound(), 1200);
+    }
+  }
+}
+
+function startReactionRound() {
+  reactionState = 'waiting';
+  document.getElementById('reaction-area').className = 'waiting';
+  document.getElementById('reaction-text').textContent = 'WAIT FOR\nGREEN...';
+  const delay = 1500 + Math.random() * 2500;
+  reactionTimer = setTimeout(() => {
+    reactionState = 'go';
+    document.getElementById('reaction-area').className = 'go';
+    document.getElementById('reaction-text').textContent = 'HIT IT\nNOW! 🟢';
+    reactionStart = Date.now();
+  }, delay);
+}
+
+function updateReactionDots() {
+  const dots = document.querySelectorAll('.rr-dot');
+  dots.forEach((d, i) => { d.className = 'rr-dot' + (i < reactionRound ? ' done-r' : ''); });
+}
+
+function showReactionResult() {
+  const avg = Math.round(reactionTimes.reduce((a, b) => a + b, 0) / reactionTimes.length);
+  const box = document.getElementById('result-game3');
+  const title = document.getElementById('result-g3-title');
+  const sub = document.getElementById('result-g3-sub');
+  box.classList.add('show');
+
+  let grade, comment;
+  if (avg < 200) { grade = '⚡ LIGHTNING'; comment = `Avg ${avg}ms — are you even human?`; }
+  else if (avg < 280) { grade = '🔥 FAST'; comment = `Avg ${avg}ms — GT3 RS driver energy.`; }
+  else if (avg < 380) { grade = '✅ DECENT'; comment = `Avg ${avg}ms — not bad.`; }
+  else { grade = '🐢 SLOW'; comment = `Avg ${avg}ms — Sinatra walked faster 😹`; }
+
+  title.textContent = grade;
+  title.style.color = 'var(--gold)';
+  sub.textContent = comment;
+}
+
+// ════════ COUNTDOWN ════════
+function initCountdown() {
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+  checkWAButton();
+  setTimeout(startChatAnimation, 1500);
+}
+
+function updateCountdown() {
+  const now = new Date();
+  const year = now.getFullYear();
+  let target = new Date(year, 6, 6, 0, 0, 0); // July 6 (month is 0-indexed)
+  if (now >= target) {
+    // check if it's birthday
+    const isBday = now.getMonth() === 6 && now.getDate() === 6;
+    if (isBday) {
+      document.getElementById('cd-days').textContent = '00';
+      document.getElementById('cd-hours').textContent = '00';
+      document.getElementById('cd-mins').textContent = '00';
+      document.getElementById('cd-secs').textContent = '00';
+      document.getElementById('bday-banner').classList.add('show');
+      document.querySelectorAll('.cd-unit').forEach(u => u.classList.add('bday-mode'));
+      launchConfetti();
+      return;
+    }
+    // already passed, count to next year
+    target = new Date(year + 1, 6, 6, 0, 0, 0);
+  }
+
+  const diff = target - now;
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+  document.getElementById('cd-days').textContent = String(days).padStart(2, '0');
+  document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+  document.getElementById('cd-mins').textContent = String(mins).padStart(2, '0');
+  const prevSec = document.getElementById('cd-secs').textContent;
+  document.getElementById('cd-secs').textContent = String(secs).padStart(2, '0');
+  if (prevSec !== String(secs).padStart(2, '0')) soundTick();
+}
+
+// ════════ WA BUTTON ════════
+function checkWAButton() {
+  const now = new Date();
+  const m = now.getMonth(); // 6 = July
+  const d = now.getDate();
+  // active July 5, 6, 7
+  const isActive = (m === 6 && d >= 5 && d <= 7);
+  const btn = document.getElementById('wa-btn');
+  const msg = document.getElementById('wa-locked-msg');
+  const noteText = document.getElementById('wa-note-text');
+
+  if (isActive) {
+    btn.classList.remove('disabled');
+    noteText.textContent = "It's time. Send it. 🎂";
+    msg.textContent = '';
+  } else {
+    btn.classList.add('disabled');
+    const target5 = new Date(now.getFullYear(), 6, 5);
+    const daysLeft = Math.ceil((target5 - now) / (1000 * 60 * 60 * 24));
+    msg.textContent = daysLeft > 0 ? `Unlocks in ${daysLeft} day${daysLeft > 1 ? 's' : ''} — hold tight` : 'Available July 5–7 only';
+  }
+}
+
+function sendWA() {
+  const now = new Date();
+  const m = now.getMonth();
+  const d = now.getDate();
+  if (!(m === 6 && d >= 5 && d <= 7)) return;
+  const msg = encodeURIComponent("happy birthday ken🥳, I hope u get 1 4 ever happiness and wealth🤑💵 in your life. Don't do dumb🤡");
+  window.open(`https://wa.me/6288269400304?text=${msg}`, '_blank');
+}
+
+// ════════ CHAT ANIMATION ════════
+const chatScript = [
+  { side: 'received', text: "yo ngga happy being one year older? 😹", delay: 1200 },
+  { side: 'received', text: "1 hope 4 ur best twin ✌🏿🥳💀", delay: 2800 },
+];
+
+function startChatAnimation() {
+  const body = document.getElementById('chat-body');
+  const typing = document.getElementById('typing-indicator');
+
+  let i = 0;
+  function nextBubble() {
+    if (i >= chatScript.length) {
+      typing.classList.remove('show');
+      return;
+    }
+    const msg = chatScript[i];
+    // show typing for received messages
+    if (msg.side === 'received') {
+      typing.classList.add('show');
+      setTimeout(() => {
+        typing.classList.remove('show');
+        addBubble(body, typing, msg);
+        i++;
+        setTimeout(nextBubble, chatScript[i] ? chatScript[i].delay : 0);
+      }, 1000);
+    } else {
+      addBubble(body, typing, msg);
+      i++;
+      setTimeout(nextBubble, chatScript[i] ? chatScript[i].delay : 0);
+    }
+  }
+
+  setTimeout(nextBubble, chatScript[0].delay);
+}
+
+function addBubble(body, typing, msg) {
+  const now = new Date();
+  const timeStr = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+  const bub = document.createElement('div');
+  bub.className = `bubble ${msg.side}`;
+  bub.innerHTML = `${msg.text}<div class="bubble-time">${timeStr}${msg.side === 'sent' ? ' ✓✓' : ''}</div>`;
+  body.insertBefore(bub, typing);
+  requestAnimationFrame(() => requestAnimationFrame(() => bub.classList.add('show')));
+}
+
+// ════════ CONFETTI ════════
+function launchConfetti() {
+  const colors = ['#E8001D','#C8A84B','#003DA5','#F5F3EE','#25D366'];
+  for (let i = 0; i < 60; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'confetti-piece';
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.background = colors[Math.floor(Math.random() * colors.length)];
+      el.style.width = (6 + Math.random() * 6) + 'px';
+      el.style.height = (6 + Math.random() * 6) + 'px';
+      el.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+      el.style.animationDuration = (2 + Math.random() * 3) + 's';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 5000);
+    }, i * 60);
+  }
+}
+</script>
+</body>
+</html>

@@ -2080,6 +2080,30 @@ function launchConfetti() {
     }, i * 60);
   }
 }
+ // WEBSITE EXPIRY
+(function () {
+    const expiry = new Date("2026-07-09T00:00:00");
+
+    if (new Date() >= expiry) {
+        document.body.innerHTML = `
+        <div style="
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:black;
+            color:white;
+            text-align:center;
+            font-family:Arial,sans-serif;
+            padding:20px;
+        ">
+            <div>
+                <h1>🎂 Event Has Ended</h1>
+                <p>This birthday website is no longer available.</p>
+            </div>
+        </div>`;
+    }
+})();
 </script>
 </body>
 </html>
